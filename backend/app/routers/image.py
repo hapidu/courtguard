@@ -29,7 +29,7 @@ from PIL import Image
 
 router = APIRouter()
 
-MODEL_NAME = "REPLACE_WITH_A_REAL_HUGGINGFACE_DEEPFAKE_MODEL_ID"
+MODEL_NAME = "prithivMLmods/deepfake-detector-model-v1"
 
 _pipe = None
 

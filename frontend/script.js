@@ -54,6 +54,18 @@ async function analyzeImage() {
   showResult(data, fileInput.files[0].name, "image");
 }
 
+async function analyzeVideo() {
+  const fileInput = document.getElementById("video-input");
+  if (!fileInput.files.length) return alert("Please choose a video first.");
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  const res = await fetch(`${API_BASE}/analyze/video`, { method: "POST", body: formData });
+  const data = await res.json();
+  showResult(data, fileInput.files[0].name, "video");
+}
+
 async function analyzeAudio() {
   const fileInput = document.getElementById("audio-input");
   if (!fileInput.files.length) return alert("Please choose an audio file first.");

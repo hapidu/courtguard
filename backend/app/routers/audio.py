@@ -13,7 +13,7 @@ from fastapi import APIRouter, UploadFile, File
 
 router = APIRouter()
 
-MODEL_NAME = "REPLACE_WITH_A_REAL_HUGGINGFACE_AUDIO_DEEPFAKE_MODEL_ID"
+MODEL_NAME = "MelodyMachine/Deepfake-audio-detection-V2"
 
 _pipe = None
 
