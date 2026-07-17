@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CourtGuard - Digital Evidence Verification</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🛡️ CourtGuard</h1>
+    <p>AI-Based Digital Evidence Verification System</p>
+  </header>
+
+  <main>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="text">Text / Phishing</button>
+      <button class="tab-btn" data-tab="image">Image</button>
+      <button class="tab-btn" data-tab="audio">Audio</button>
+    </nav>
+
+    <section id="text" class="tab-panel active">
+      <h2>Analyze Text Message</h2>
+      <textarea id="text-input" rows="5" placeholder="Paste an email/message to check for phishing or social engineering..."></textarea>
+      <button onclick="analyzeText()">Analyze</button>
+    </section>
+
+    <section id="image" class="tab-panel">
+      <h2>Analyze Image / Video Frame</h2>
+      <input type="file" id="image-input" accept="image/*" />
+      <button onclick="analyzeImage()">Analyze</button>
+    </section>
+
+    <section id="audio" class="tab-panel">
+      <h2>Analyze Audio</h2>
+      <input type="file" id="audio-input" accept="audio/*" />
+      <button onclick="analyzeAudio()">Analyze</button>
+    </section>
+
+    <section id="result-box" class="hidden">
+      <h2>Result</h2>
+      <div id="result-content"></div>
+      <button onclick="downloadReport()">Download PDF Report</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
