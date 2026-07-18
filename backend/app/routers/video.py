@@ -10,6 +10,7 @@ import tempfile
 from fastapi import APIRouter, UploadFile, File
 
 from app.routers.image import get_pipe, extract_frames
+from app.database import save_analysis
 
 router = APIRouter()
 
@@ -46,7 +47,7 @@ async def analyze_video(file: UploadFile = File(...)):
         is_fake = avg_fake > avg_real
         confidence = avg_fake if is_fake else avg_real
 
-    return {
+    result = {
         "verdict": "fake" if is_fake else "real",
         "confidence_score": round(confidence * 100, 2),
         "details": {
@@ -56,3 +57,11 @@ async def analyze_video(file: UploadFile = File(...)):
             "per_frame_results": per_frame_results,
         },
     }
+    save_analysis(
+        evidence_name=file.filename,
+        evidence_type="video",
+        verdict=result["verdict"],
+        confidence_score=result["confidence_score"],
+        details=str(result["details"]),
+    )
+    return result

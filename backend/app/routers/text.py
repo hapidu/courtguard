@@ -2,6 +2,7 @@ import os
 import joblib
 from fastapi import APIRouter
 from pydantic import BaseModel
+from app.database import save_analysis
 
 router = APIRouter()
 
@@ -39,7 +40,7 @@ def analyze_text(request: TextRequest):
 
     is_phishing = prediction == "phishing"
 
-    return {
+    result = {
         "verdict": "suspicious" if is_phishing else "legitimate",
         "confidence_score": round(confidence * 100, 2),
         "details": {
@@ -50,3 +51,11 @@ def analyze_text(request: TextRequest):
             },
         },
     }
+    save_analysis(
+        evidence_name=request.text[:50],
+        evidence_type="text",
+        verdict=result["verdict"],
+        confidence_score=result["confidence_score"],
+        details=str(result["details"]),
+    )
+    return result

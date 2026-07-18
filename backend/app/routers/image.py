@@ -26,6 +26,7 @@ average the fake-probability across frames. See extract_frames() below.
 import io
 from fastapi import APIRouter, UploadFile, File
 from PIL import Image
+from app.database import save_analysis
 
 router = APIRouter()
 
@@ -53,12 +54,19 @@ async def analyze_image(file: UploadFile = File(...)):
     top = max(results, key=lambda r: r["score"])
     is_fake = "fake" in top["label"].lower() or "deepfake" in top["label"].lower()
 
-    return {
+    result = {
         "verdict": "fake" if is_fake else "real",
         "confidence_score": round(top["score"] * 100, 2),
         "details": {"raw_model_output": results},
     }
-
+    save_analysis(
+        evidence_name=file.filename,
+        evidence_type="image",
+        verdict=result["verdict"],
+        confidence_score=result["confidence_score"],
+        details=str(result["details"]),
+    )
+    return result
 
 def extract_frames(video_path: str, num_frames: int = 8):
     """

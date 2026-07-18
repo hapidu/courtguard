@@ -99,3 +99,22 @@ async function downloadReport() {
   a.download = "courtguard_report.pdf";
   a.click();
 }
+
+async function loadHistory() {
+  const res = await fetch(`${API_BASE}/history`);
+  const data = await res.json();
+
+  const container = document.getElementById("history-list");
+  if (!data.analyses.length) {
+    container.innerHTML = "<p>No analyses yet.</p>";
+    return;
+  }
+
+  container.innerHTML = data.analyses.map(a => `
+    <div style="border-bottom:1px solid #334155; padding:10px 0;">
+      <strong>${a.evidence_name}</strong> (${a.evidence_type})<br>
+      Verdict: ${a.verdict.toUpperCase()} — Confidence: ${a.confidence_score}%<br>
+      <small>${new Date(a.created_at).toLocaleString()}</small>
+    </div>
+  `).join("");
+}

@@ -10,6 +10,7 @@ Paste the model ID into MODEL_NAME below.
 import io
 import tempfile
 from fastapi import APIRouter, UploadFile, File
+from app.database import save_analysis
 
 router = APIRouter()
 
@@ -42,8 +43,16 @@ async def analyze_audio(file: UploadFile = File(...)):
     top = max(results, key=lambda r: r["score"])
     is_fake = "fake" in top["label"].lower() or "spoof" in top["label"].lower()
 
-    return {
+    result = {
         "verdict": "fake" if is_fake else "real",
         "confidence_score": round(top["score"] * 100, 2),
         "details": {"raw_model_output": results},
     }
+    save_analysis(
+        evidence_name=file.filename,
+        evidence_type="audio",
+        verdict=result["verdict"],
+        confidence_score=result["confidence_score"],
+        details=str(result["details"]),
+    )
+    return result

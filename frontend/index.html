@@ -17,6 +17,7 @@
       <button class="tab-btn" data-tab="image">Image</button>
       <button class="tab-btn" data-tab="video">Video</button>
       <button class="tab-btn" data-tab="audio">Audio</button>
+      <button class="tab-btn" data-tab="history">History</button>
     </nav>
 
     <section id="text" class="tab-panel active">
@@ -41,6 +42,12 @@
       <h2>Analyze Audio</h2>
       <input type="file" id="audio-input" accept="audio/*" />
       <button onclick="analyzeAudio()">Analyze</button>
+    </section>
+
+    <section id="history" class="tab-panel">
+      <h2>Audit Trail — Past Analyses</h2>
+      <button onclick="loadHistory()">Refresh</button>
+      <div id="history-list"></div>
     </section>
 
     <section id="result-box" class="hidden">

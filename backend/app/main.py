@@ -6,8 +6,9 @@ Run locally with:
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.database import init_db
 
-from app.routers import text, image, audio, video, report, combined
+from app.routers import text, image, audio, video, report, combined, history
 
 app = FastAPI(
     title="CourtGuard API",
@@ -24,14 +25,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def startup_event():
+    init_db()
+
 app.include_router(text.router, prefix="/analyze/text", tags=["Text Analysis"])
 app.include_router(image.router, prefix="/analyze/image", tags=["Image/Video Analysis"])
 app.include_router(video.router, prefix="/analyze/video", tags=["Video Analysis"])
 app.include_router(audio.router, prefix="/analyze/audio", tags=["Audio Analysis"])
 app.include_router(combined.router, prefix="/analyze/combined", tags=["Combined Risk Score"])
+app.include_router(history.router, prefix="/history", tags=["History / Audit Trail"])
 app.include_router(report.router, prefix="/report", tags=["PDF Report"])
 
 
 @app.get("/")
 def health_check():
     return {"status": "ok", "message": "CourtGuard API is running"}
+
