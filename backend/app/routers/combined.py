@@ -25,15 +25,14 @@ class CombinedRequest(BaseModel):
     video: Optional[ModuleScore] = None
     image: Optional[ModuleScore] = None
     audio: Optional[ModuleScore] = None
-    text: Optional[ModuleScore] = None
+    
 
 
 # Weights derived from your survey's "most vulnerable evidence type" results
 WEIGHTS = {
-    "video": 0.40,
-    "image": 0.29,
-    "text": 0.15,
-    "audio": 0.10,
+    "video": 0.54,
+    "image": 0.34,
+    "audio": 0.12,
 }
 
 

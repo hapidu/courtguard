@@ -4,11 +4,13 @@ CourtGuard backend entry point.
 Run locally with:
     uvicorn app.main:app --reload --port 8000
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import init_db
 
-from app.routers import text, image, audio, video, report, combined, history
+from app.routers import image, audio, video, report, combined, history
+from app.security import verify_api_key
+
 
 app = FastAPI(
     title="CourtGuard API",
@@ -29,12 +31,11 @@ app.add_middleware(
 def startup_event():
     init_db()
 
-app.include_router(text.router, prefix="/analyze/text", tags=["Text Analysis"])
-app.include_router(image.router, prefix="/analyze/image", tags=["Image/Video Analysis"])
-app.include_router(video.router, prefix="/analyze/video", tags=["Video Analysis"])
-app.include_router(audio.router, prefix="/analyze/audio", tags=["Audio Analysis"])
-app.include_router(combined.router, prefix="/analyze/combined", tags=["Combined Risk Score"])
-app.include_router(history.router, prefix="/history", tags=["History / Audit Trail"])
+app.include_router(image.router, prefix="/analyze/image", tags=["Image/Video Analysis"], dependencies=[Depends(verify_api_key)])
+app.include_router(video.router, prefix="/analyze/video", tags=["Video Analysis"], dependencies=[Depends(verify_api_key)])
+app.include_router(audio.router, prefix="/analyze/audio", tags=["Audio Analysis"], dependencies=[Depends(verify_api_key)])
+app.include_router(combined.router, prefix="/analyze/combined", tags=["Combined Risk Score"], dependencies=[Depends(verify_api_key)])
+app.include_router(history.router, prefix="/history", tags=["History / Audit Trail"], dependencies=[Depends(verify_api_key)])
 app.include_router(report.router, prefix="/report", tags=["PDF Report"])
 
 

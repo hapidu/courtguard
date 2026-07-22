@@ -7,41 +7,43 @@
 </head>
 <body>
   <header>
-    <h1>🛡️ CourtGuard</h1>
+    <h1>CourtGuard</h1>
     <p>AI-Based Digital Evidence Verification System</p>
   </header>
 
   <main>
     <nav class="tabs">
-      <button class="tab-btn active" data-tab="text">Text / Phishing</button>
-      <button class="tab-btn" data-tab="image">Image</button>
+      <button class="tab-btn active" data-tab="image">Image</button>
       <button class="tab-btn" data-tab="video">Video</button>
       <button class="tab-btn" data-tab="audio">Audio</button>
       <button class="tab-btn" data-tab="history">History</button>
     </nav>
 
-    <section id="text" class="tab-panel active">
-      <h2>Analyze Text Message</h2>
-      <textarea id="text-input" rows="5" placeholder="Paste an email/message to check for phishing or social engineering..."></textarea>
-      <button onclick="analyzeText()">Analyze</button>
-    </section>
-
-    <section id="image" class="tab-panel">
-      <h2>Analyze Image / Video Frame</h2>
+    <section id="image" class="tab-panel active">
+      <h2>Analyze Image</h2>
       <input type="file" id="image-input" accept="image/*" />
-      <button onclick="analyzeImage()">Analyze</button>
+      <div class="btn-row">
+        <button onclick="analyzeImage()">Analyze</button>
+        <button class="secondary" onclick="clearTab('image')">Clear</button>
+      </div>
     </section>
 
     <section id="video" class="tab-panel">
       <h2>Analyze Video</h2>
       <input type="file" id="video-input" accept="video/*" />
-      <button onclick="analyzeVideo()">Analyze</button>
-    </section> 
+      <div class="btn-row">
+        <button onclick="analyzeVideo()">Analyze</button>
+        <button class="secondary" onclick="clearTab('video')">Clear</button>
+      </div>
+    </section>
 
     <section id="audio" class="tab-panel">
       <h2>Analyze Audio</h2>
       <input type="file" id="audio-input" accept="audio/*" />
-      <button onclick="analyzeAudio()">Analyze</button>
+      <div class="btn-row">
+        <button onclick="analyzeAudio()">Analyze</button>
+        <button class="secondary" onclick="clearTab('audio')">Clear</button>
+      </div>
     </section>
 
     <section id="history" class="tab-panel">
@@ -50,10 +52,27 @@
       <div id="history-list"></div>
     </section>
 
+    <section id="loading-box" class="hidden">
+      <div class="spinner"></div>
+      <p>Analyzing evidence...</p>
+    </section>
+
     <section id="result-box" class="hidden">
       <h2>Result</h2>
-      <div id="result-content"></div>
-      <button onclick="downloadReport()">Download PDF Report</button>
+      <div class="meter-wrap">
+        <div id="score-meter" class="meter">
+          <div class="meter-value" id="meter-value">0%</div>
+        </div>
+        <div id="verdict-label" class="verdict-label"></div>
+      </div>
+      <details>
+        <summary>Raw details</summary>
+        <pre id="result-content"></pre>
+      </details>
+      <div class="btn-row">
+        <button onclick="downloadReport()">Download PDF Report</button>
+        <button class="secondary" onclick="clearResult()">Clear Result</button>
+      </div>
     </section>
   </main>
 
