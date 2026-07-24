@@ -14,7 +14,7 @@ from app.database import save_analysis
 
 router = APIRouter()
 
-MODEL_NAME = "MelodyMachine/Deepfake-audio-detection-V2"
+MODEL_NAME = "Gustking/wav2vec2-large-xlsr-deepfake-audio-classification"
 
 _pipe = None
 

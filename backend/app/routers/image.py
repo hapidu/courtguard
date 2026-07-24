@@ -30,7 +30,7 @@ from app.database import save_analysis
 
 router = APIRouter()
 
-MODEL_NAME = "prithivMLmods/deepfake-detector-model-v1"
+MODEL_NAME = "Wvolf/ViT_Deepfake_Detection"
 
 _pipe = None
 
